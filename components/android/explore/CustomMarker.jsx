@@ -40,9 +40,6 @@ export default function CustomMarker() {
   });
   return (
     <Marker
-      title="Ashiap"
-      description="This is ashiap mantuls"
-      pinColor="aqua"
       coordinate={{
         latitude: 37.78825,
         longitude: -122.4324,
