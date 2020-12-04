@@ -21,6 +21,7 @@
   "rules": {
     "react/style-prop-object": "off",
     "react/prop-types": "off",
-    "import/no-extraneous-dependencies": "off"
+    "import/no-extraneous-dependencies": "off",
+    "react/jsx-props-no-spreading": "off"
   }
 }
