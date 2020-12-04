@@ -13,13 +13,13 @@ export default function CreateEventIcon() {
   return (
     <View style={styles.container}>
       <IconButton
-        icon="magnify"
+        icon="plus-box-outline"
         size={24}
         color={colors.placeholder}
         onPress={() => {}}
       />
       <IconButton
-        icon="plus-box-outline"
+        icon="magnify"
         size={24}
         color={colors.placeholder}
         onPress={() => {}}
