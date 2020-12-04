@@ -1,8 +1,7 @@
 import React from 'react';
 
-import CreateEventIcon from '../components/android/CreateEventIcon';
-
 import ExploreScreen from '../screens/MainDrawer/ExploreScreen';
+import ExploreHeaderActions from '../components/android/explore/HeaderActions';
 
 export default [
   {
@@ -16,7 +15,7 @@ export default [
         borderColor: '#e0e0e0',
         borderBottomWidth: 1,
       },
-      headerRight: () => <CreateEventIcon />,
+      headerRight: () => <ExploreHeaderActions />,
     },
   },
 ];

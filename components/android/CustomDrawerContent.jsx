@@ -12,9 +12,6 @@ export default function CustomDrawerContent(props) {
       height: 52,
       paddingHorizontal: 12,
       justifyContent: 'center',
-      borderBottomWidth: 1,
-      borderColor: '#e0e0e0',
-      marginBottom: 12,
     },
   });
   return (
