@@ -19,6 +19,8 @@
     "react"
   ],
   "rules": {
-    "react/style-prop-object": "off"
+    "react/style-prop-object": "off",
+    "react/prop-types": "off",
+    "import/no-extraneous-dependencies": "off"
   }
 }
