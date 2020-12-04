@@ -1,9 +1,9 @@
-import HomeScreen from '../screens/RootStack/HomeScreen';
+import MainDrawerNavigation from '../navigations/MainDrawerNavigation';
 
 export default [
   {
-    name: 'home',
-    component: HomeScreen,
+    name: 'main-drawer',
+    component: MainDrawerNavigation,
     options: {
       headerTitle: 'Peta',
     },
