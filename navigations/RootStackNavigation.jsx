@@ -7,7 +7,12 @@ const RootStack = createStackNavigator();
 
 export default function RootStackNavigation() {
   return (
-    <RootStack.Navigator>
+    <RootStack.Navigator
+      mode="modal"
+      headerMode="float"
+      initialRouteName="main-drawer"
+      screenOptions={{ headerShown: false }}
+    >
       {appStackRegister.map((s) => (
         <RootStack.Screen
           key={s.name}
