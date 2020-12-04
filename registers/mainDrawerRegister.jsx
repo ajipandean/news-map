@@ -7,6 +7,11 @@ export default [
     component: ExploreScreen,
     options: {
       title: 'Explore',
+      headerStyle: {
+        elevation: 0,
+        borderColor: '#e0e0e0',
+        borderBottomWidth: 1,
+      },
     },
   },
 ];
