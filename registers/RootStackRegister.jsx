@@ -4,6 +4,8 @@ export default [
   {
     name: 'main-bottom-tabs',
     component: MainBottomTabsNavigation,
-    options: {},
+    options: {
+      headerShown: false,
+    },
   },
 ];
