@@ -3,8 +3,10 @@ import ExploreScreen from '../screens/MainBottomTabs/ExploreScreen';
 export default [
   {
     name: 'explore',
-    icon: 'map-marker',
+    icon: 'map-marker-outline',
     component: ExploreScreen,
-    options: {},
+    options: {
+      title: 'Explore',
+    },
   },
 ];
