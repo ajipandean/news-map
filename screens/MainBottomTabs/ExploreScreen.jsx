@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import MapView from 'react-native-maps';
+import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import { FAB, Searchbar, useTheme } from 'react-native-paper';
+
+import mapConfig from '../../config/map';
 
 export default function ExploreScreen() {
   const { colors } = useTheme();
+  const { width, height } = useWindowDimensions();
   const [query, setQuery] = useState('');
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       position: 'relative',
     },
+    map: { width, height },
     searchbar: {
       position: 'absolute',
       top: 16,
@@ -27,9 +32,10 @@ export default function ExploreScreen() {
   });
   return (
     <View style={styles.container}>
+      <MapView {...mapConfig} style={styles.map} />
       <Searchbar
         value={query}
-        selectionColor={colors.placeholder}
+        selectionColor="black"
         onChangeText={(v) => setQuery(v)}
         style={styles.searchbar}
         placeholder="Search for place"
