@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MapView from 'react-native-maps';
+import * as Location from 'expo-location';
 import { Camera } from 'expo-camera';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -40,8 +41,10 @@ export default function ExploreScreen() {
   });
   async function handleNavigateToCamera() {
     try {
-      const { granted } = await Camera.requestPermissionsAsync();
-      if (!granted) throw new Error('No access to camera.');
+      const locationAccess = await Location.requestPermissionsAsync();
+      const cameraAccess = await Camera.requestPermissionsAsync();
+      if (!locationAccess.granted) throw new Error('No access to user location.');
+      if (!cameraAccess.granted) throw new Error('No access to camera.');
       navigate('camera');
     } catch (err) {
       ToastAndroid.show(err.message, ToastAndroid.LONG);

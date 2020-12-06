@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
+import * as Location from 'expo-location';
 import {
   View,
   StyleSheet,
@@ -13,6 +14,12 @@ import { FAB, Divider, useTheme } from 'react-native-paper';
 export default function CreateScreen() {
   const { params } = useRoute();
   const { colors } = useTheme();
+  useEffect(() => {
+    (async () => {
+      const location = await Location.getCurrentPositionAsync();
+      console.log(location);
+    })();
+  });
   const styles = StyleSheet.create({
     container: {
       flex: 1,
