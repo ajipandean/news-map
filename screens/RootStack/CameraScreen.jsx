@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { Camera } from 'expo-camera';
 import {
   View, StyleSheet, TouchableOpacity, ToastAndroid,
@@ -13,6 +14,7 @@ const FLASH_OFF = Camera.Constants.FlashMode.off;
 export default function CameraScreen() {
   const { colors } = useTheme();
   const cameraRef = useRef(null);
+  const { navigate } = useNavigation();
   const [cameraType, setCameraType] = useState(BACK);
   const [flashMode, setFlashMode] = useState(FLASH_OFF);
   const styles = StyleSheet.create({
@@ -43,8 +45,12 @@ export default function CameraScreen() {
   });
   async function handleCapture() {
     try {
-      const photo = await cameraRef.current.takePictureAsync({ quality: 1 });
-      console.log(photo);
+      await cameraRef.current.takePictureAsync({
+        skipProcessing: true,
+        onPictureSaved: (photo) => {
+          navigate('create', { photo });
+        },
+      });
     } catch (err) {
       ToastAndroid.show(err.message, ToastAndroid.LONG);
     }
