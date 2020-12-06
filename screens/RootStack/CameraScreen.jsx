@@ -78,6 +78,14 @@ export default function CameraScreen() {
     setPhotos(photos.filter((photo) => photo.uri !== uri));
     setSelected(uri);
   }
+  function handleRedirect() {
+    try {
+      if (photos.length === 0) throw new Error('Photos empty.');
+      navigate('create-new-post', { photos });
+    } catch (err) {
+      ToastAndroid.show(err.message, ToastAndroid.LONG);
+    }
+  }
   return (
     <View style={styles.container}>
       <Camera
@@ -128,7 +136,7 @@ export default function CameraScreen() {
         color={colors.surface}
         icon="arrow-right"
         style={styles.next}
-        onPress={() => navigate('create-new-post', { photos })}
+        onPress={handleRedirect}
       >
         Next
       </Button>
