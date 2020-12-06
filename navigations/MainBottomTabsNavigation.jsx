@@ -11,6 +11,7 @@ export default function MainBottomTabsNavigation() {
   const { colors } = useTheme();
   return (
     <MainBottomTabs.Navigator
+      shifting={false}
       activeColor={colors.primary}
       barStyle={{
         backgroundColor: colors.surface,
