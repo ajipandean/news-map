@@ -9,7 +9,7 @@ import {
   TextInput,
   Text,
 } from 'react-native';
-import { FAB, Divider, useTheme } from 'react-native-paper';
+import { Button, Divider, useTheme } from 'react-native-paper';
 
 export default function CreateScreen() {
   const { params } = useRoute();
@@ -40,13 +40,6 @@ export default function CreateScreen() {
       fontSize: 12,
       color: colors.placeholder,
     },
-    fab: {
-      position: 'absolute',
-      bottom: 0,
-      right: 0,
-      margin: 16,
-      backgroundColor: colors.primary,
-    },
   });
   return (
     <View style={styles.container}>
@@ -71,12 +64,16 @@ export default function CreateScreen() {
             The location of this post will be adjusted automatically.
           </Text>
         </View>
+        <Divider />
+        <View style={styles.padded}>
+          <Button
+            mode="contained"
+            onPress={() => {}}
+          >
+            Save
+          </Button>
+        </View>
       </ScrollView>
-      <FAB
-        icon="send"
-        style={styles.fab}
-        onPress={() => {}}
-      />
     </View>
   );
 }
