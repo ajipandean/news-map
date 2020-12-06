@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MapView from 'react-native-maps';
+import { useNavigation } from '@react-navigation/native';
 import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import { FAB, Searchbar, useTheme } from 'react-native-paper';
 
@@ -9,6 +10,7 @@ export default function ExploreScreen() {
   const { colors } = useTheme();
   const { width, height } = useWindowDimensions();
   const [query, setQuery] = useState('');
+  const { navigate } = useNavigation();
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -40,7 +42,12 @@ export default function ExploreScreen() {
         style={styles.searchbar}
         placeholder="Search for place"
       />
-      <FAB icon="plus" color="black" style={styles.fab} onPress={() => {}} />
+      <FAB
+        icon="plus"
+        color="black"
+        style={styles.fab}
+        onPress={() => navigate('camera')}
+      />
     </View>
   );
 }
