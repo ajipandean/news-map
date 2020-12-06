@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useRoute } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import {
   View,
@@ -13,9 +13,14 @@ import {
   FAB, Button, Divider, useTheme,
 } from 'react-native-paper';
 
+import PreviewCarousel from '../../components/android/PreviewCarousel';
+
 export default function CreateScreen() {
   const { params } = useRoute();
+  const { navigate } = useNavigation();
   const { colors } = useTheme();
+  const [photos, setPhotos] = useState(params.photos);
+  const [selected, setSelected] = useState('');
   useEffect(() => {
     (async () => {
       const location = await Location.getCurrentPositionAsync();
@@ -50,20 +55,29 @@ export default function CreateScreen() {
       backgroundColor: colors.surface,
     },
   });
+  function handleRemove(uri) {
+    setPhotos(photos.filter((photo) => photo.uri !== uri));
+    setSelected(uri);
+  }
   return (
     <View style={styles.container}>
       <ScrollView style={{ flex: 1, paddingBottom: 56 }}>
-        <View style={[styles.padded, { position: 'relative' }]}>
-          <Image
-            style={styles.image}
-            source={{ uri: params.photo.uri }}
+        <View style={{
+          position: 'relative',
+          paddingVertical: 16,
+        }}
+        >
+          <PreviewCarousel
+            photos={photos}
+            dimension={1}
+            padding={12}
           />
           <FAB
             small
             icon="image-plus"
             style={styles.fab}
             color={colors.primary}
-            onPress={() => {}}
+            onPress={() => navigate('camera', photos)}
           />
         </View>
         <Divider />

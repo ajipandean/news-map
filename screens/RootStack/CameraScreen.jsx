@@ -66,7 +66,6 @@ export default function CameraScreen() {
       await cameraRef.current.takePictureAsync({
         skipProcessing: true,
         onPictureSaved: (photo) => {
-          // navigate('create-new-post', { photo });
           setPhotos([...photos, photo]);
         },
       });
@@ -95,6 +94,8 @@ export default function CameraScreen() {
               dimension={0.4}
               selected={selected}
               handleRemove={handleRemove}
+              mode="editable"
+              padding={4}
             />
           </View>
           <View style={styles.actions}>
@@ -126,7 +127,7 @@ export default function CameraScreen() {
         color={colors.surface}
         icon="arrow-right"
         style={styles.next}
-        onPress={() => {}}
+        onPress={() => navigate('create-new-post', { photos })}
       >
         Next
       </Button>

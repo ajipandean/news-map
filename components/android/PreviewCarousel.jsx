@@ -9,7 +9,7 @@ const WIDTH = 140;
 const HEIGHT = 220;
 
 export default function PreviewCarousel({
-  photos, dimension, selected, handleRemove,
+  mode, photos, dimension, selected, handleRemove, padding,
 }) {
   const { colors } = useTheme();
   const styles = StyleSheet.create({
@@ -36,9 +36,9 @@ export default function PreviewCarousel({
       <FlatList
         horizontal
         data={photos}
-        extraData={selected}
+        extraData={mode === 'editable' ? selected : null}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 4 }}
+        contentContainerStyle={{ paddingHorizontal: padding }}
         keyExtractor={(item, index) => `photos-${index}`}
         renderItem={({ item }) => (
           <View style={styles.wrapper}>
@@ -46,16 +46,18 @@ export default function PreviewCarousel({
               style={styles.image}
               source={{ uri: item.uri }}
             />
-            <TouchableOpacity
-              style={styles.close}
-              onPress={() => handleRemove(item.uri)}
-            >
-              <MaterialCommunityIcons
-                size={18}
-                color={colors.surface}
-                name="close-circle-outline"
-              />
-            </TouchableOpacity>
+            {mode === 'editable' ? (
+              <TouchableOpacity
+                style={styles.close}
+                onPress={() => handleRemove(item.uri)}
+              >
+                <MaterialCommunityIcons
+                  size={18}
+                  color={colors.surface}
+                  name="close-circle-outline"
+                />
+              </TouchableOpacity>
+            ) : null}
           </View>
         )}
       />
