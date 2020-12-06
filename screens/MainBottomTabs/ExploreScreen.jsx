@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import MapView from 'react-native-maps';
 import * as Location from 'expo-location';
 import { Camera } from 'expo-camera';
@@ -8,15 +8,15 @@ import {
   StyleSheet,
   useWindowDimensions,
   ToastAndroid,
+  Text,
 } from 'react-native';
-import { FAB, Searchbar, useTheme } from 'react-native-paper';
+import { FAB, useTheme } from 'react-native-paper';
 
 import mapConfig from '../../config/map';
 
 export default function ExploreScreen() {
   const { colors } = useTheme();
   const { width, height } = useWindowDimensions();
-  const [query, setQuery] = useState('');
   const { navigate } = useNavigation();
   const styles = StyleSheet.create({
     container: {
@@ -24,12 +24,21 @@ export default function ExploreScreen() {
       position: 'relative',
     },
     map: { width, height },
-    searchbar: {
+    brand: {
       position: 'absolute',
       top: 16,
       left: 0,
       margin: 16,
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      elevation: 4,
       borderRadius: 100,
+      backgroundColor: colors.surface,
+    },
+    brand_title: {
+      fontSize: 16,
+      color: colors.primary,
+      fontWeight: 'bold',
     },
     fab: {
       position: 'absolute',
@@ -53,13 +62,9 @@ export default function ExploreScreen() {
   return (
     <View style={styles.container}>
       <MapView {...mapConfig} style={styles.map} />
-      <Searchbar
-        value={query}
-        selectionColor="black"
-        onChangeText={(v) => setQuery(v)}
-        style={styles.searchbar}
-        placeholder="Search for place"
-      />
+      <View style={styles.brand}>
+        <Text style={styles.brand_title}>App</Text>
+      </View>
       <FAB
         icon="plus"
         style={styles.fab}
