@@ -32,7 +32,7 @@ export default function CreateScreen() {
       padding: 16,
     },
     image: {
-      borderRadius: 8,
+      borderRadius: 4,
       width: 140,
       height: 220,
       resizeMode: 'cover',
