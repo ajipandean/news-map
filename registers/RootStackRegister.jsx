@@ -20,6 +20,8 @@ export default [
   {
     name: 'create',
     component: CreateScreen,
-    options: {},
+    options: {
+      headerTitle: 'Create new post',
+    },
   },
 ];
