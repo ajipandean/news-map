@@ -51,7 +51,7 @@ export default function ExploreScreen() {
       const cameraAccess = await Camera.requestPermissionsAsync();
       if (!locationAccess.granted) throw new Error('No access to user location.');
       if (!cameraAccess.granted) throw new Error('No access to camera.');
-      navigate('camera');
+      navigate('camera', { photos: [] });
     } catch (err) {
       ToastAndroid.show(err.message, ToastAndroid.LONG);
     }

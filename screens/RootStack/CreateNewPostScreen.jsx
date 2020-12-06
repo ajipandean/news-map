@@ -19,8 +19,6 @@ export default function CreateScreen() {
   const { params } = useRoute();
   const { navigate } = useNavigation();
   const { colors } = useTheme();
-  const [photos, setPhotos] = useState(params.photos);
-  const [selected, setSelected] = useState('');
   useEffect(() => {
     (async () => {
       const location = await Location.getCurrentPositionAsync();
@@ -55,10 +53,6 @@ export default function CreateScreen() {
       backgroundColor: colors.surface,
     },
   });
-  function handleRemove(uri) {
-    setPhotos(photos.filter((photo) => photo.uri !== uri));
-    setSelected(uri);
-  }
   return (
     <View style={styles.container}>
       <ScrollView style={{ flex: 1, paddingBottom: 56 }}>
@@ -68,16 +62,16 @@ export default function CreateScreen() {
         }}
         >
           <PreviewCarousel
-            photos={photos}
+            photos={params.photos}
             dimension={1}
             padding={12}
           />
           <FAB
             small
-            icon="image-plus"
+            icon="pencil"
             style={styles.fab}
             color={colors.primary}
-            onPress={() => navigate('camera', photos)}
+            onPress={() => navigate('camera', { photos: params.photos })}
           />
         </View>
         <Divider />

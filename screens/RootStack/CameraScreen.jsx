@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Camera } from 'expo-camera';
 import {
   View,
@@ -18,10 +18,11 @@ const FLASH_ON = Camera.Constants.FlashMode.on;
 const FLASH_OFF = Camera.Constants.FlashMode.off;
 
 export default function CameraScreen() {
-  const { colors } = useTheme();
   const cameraRef = useRef(null);
+  const { params } = useRoute();
+  const { colors } = useTheme();
   const { navigate } = useNavigation();
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState(params.photos);
   const [selected, setSelected] = useState('');
   const [cameraType, setCameraType] = useState(BACK);
   const [flashMode, setFlashMode] = useState(FLASH_OFF);
