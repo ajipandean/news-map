@@ -3,9 +3,15 @@ import { Camera } from 'expo-camera';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { IconButton, useTheme } from 'react-native-paper';
 
+const BACK = Camera.Constants.Type.back;
+const FRONT = Camera.Constants.Type.front;
+const FLASH_ON = Camera.Constants.FlashMode.on;
+const FLASH_OFF = Camera.Constants.FlashMode.off;
+
 export default function CameraScreen() {
   const { colors } = useTheme();
-  const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
+  const [cameraType, setCameraType] = useState(BACK);
+  const [flashMode, setFlashMode] = useState(FLASH_OFF);
   const styles = StyleSheet.create({
     container: { flex: 1 },
     camera: { flex: 1 },
@@ -18,7 +24,6 @@ export default function CameraScreen() {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: colors.backdrop,
     },
     capture: {
       width: 65,
@@ -32,13 +37,19 @@ export default function CameraScreen() {
   });
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={cameraType}>
+      <Camera
+        ratio="16:9"
+        style={styles.camera}
+        type={cameraType}
+        flashMode={flashMode}
+      >
         <View style={styles.actions}>
           <IconButton
+            animated
             size={28}
             color={colors.surface}
-            icon="flash"
-            onPress={() => console.log('Fliped')}
+            icon={flashMode === FLASH_OFF ? 'flash-off' : 'flash'}
+            onPress={() => setFlashMode(flashMode === FLASH_OFF ? FLASH_ON : FLASH_OFF)}
           />
           <TouchableOpacity
             rippleColor="rgba(0,0,0,0.8)"
@@ -50,7 +61,7 @@ export default function CameraScreen() {
             size={28}
             color={colors.surface}
             icon="camera-party-mode"
-            onPress={() => console.log('Fliped')}
+            onPress={() => setCameraType(cameraType === BACK ? FRONT : BACK)}
           />
         </View>
       </Camera>
