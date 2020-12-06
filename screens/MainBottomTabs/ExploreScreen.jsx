@@ -29,12 +29,9 @@ export default function ExploreScreen() {
       top: 16,
       left: 0,
       margin: 16,
-      elevation: 4,
-      backgroundColor: colors.surface,
     },
-    brand_title: {
-      fontSize: 16,
-      color: colors.primary,
+    title: {
+      fontSize: 20,
       fontWeight: 'bold',
     },
     fab: {
@@ -59,12 +56,9 @@ export default function ExploreScreen() {
   return (
     <View style={styles.container}>
       <MapView {...mapConfig} style={styles.map} />
-      <Avatar.Text
-        size={40}
-        color={colors.primary}
-        label="A"
-        style={styles.brand}
-      />
+      <View style={styles.brand}>
+        <Text style={styles.title}>Merth Apps</Text>
+      </View>
       <FAB
         icon="plus"
         style={styles.fab}
