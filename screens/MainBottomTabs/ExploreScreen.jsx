@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import MapView from 'react-native-maps';
+import { Camera } from 'expo-camera';
 import { useNavigation } from '@react-navigation/native';
-import { View, StyleSheet, useWindowDimensions } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  useWindowDimensions,
+  ToastAndroid,
+} from 'react-native';
 import { FAB, Searchbar, useTheme } from 'react-native-paper';
 
 import mapConfig from '../../config/map';
@@ -32,6 +38,15 @@ export default function ExploreScreen() {
       backgroundColor: colors.surface,
     },
   });
+  async function handleNavigateToCamera() {
+    try {
+      const { granted } = await Camera.requestPermissionsAsync();
+      if (!granted) throw new Error('No access to camera.');
+      navigate('camera');
+    } catch (err) {
+      ToastAndroid.show(err.message, ToastAndroid.LONG);
+    }
+  }
   return (
     <View style={styles.container}>
       <MapView {...mapConfig} style={styles.map} />
@@ -46,7 +61,7 @@ export default function ExploreScreen() {
         icon="plus"
         color="black"
         style={styles.fab}
-        onPress={() => navigate('camera')}
+        onPress={handleNavigateToCamera}
       />
     </View>
   );
