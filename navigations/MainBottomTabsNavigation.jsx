@@ -12,6 +12,7 @@ export default function MainBottomTabsNavigation() {
   return (
     <MainBottomTabs.Navigator
       shifting={false}
+      activeColor={colors.primary}
       barStyle={{
         backgroundColor: colors.surface,
       }}
@@ -24,7 +25,11 @@ export default function MainBottomTabsNavigation() {
           options={{
             ...s.options,
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name={s.icon} size={24} color={color} />
+              <MaterialCommunityIcons
+                name={s.icon}
+                size={24}
+                color={color}
+              />
             ),
           }}
         />
