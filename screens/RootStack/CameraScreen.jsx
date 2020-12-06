@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Camera } from 'expo-camera';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View, StyleSheet, TouchableOpacity, ToastAndroid,
+} from 'react-native';
 import { IconButton, useTheme } from 'react-native-paper';
 
 const BACK = Camera.Constants.Type.back;
@@ -10,6 +12,7 @@ const FLASH_OFF = Camera.Constants.FlashMode.off;
 
 export default function CameraScreen() {
   const { colors } = useTheme();
+  const cameraRef = useRef(null);
   const [cameraType, setCameraType] = useState(BACK);
   const [flashMode, setFlashMode] = useState(FLASH_OFF);
   const styles = StyleSheet.create({
@@ -25,23 +28,36 @@ export default function CameraScreen() {
       alignItems: 'center',
       justifyContent: 'center',
     },
-    capture: {
-      width: 65,
-      height: 65,
-      borderRadius: 100,
+    touchable: {
+      padding: 8,
+      backgroundColor: 'rgba(255, 255, 255, 0.4)',
       marginHorizontal: 50,
-      borderColor: colors.surface,
-      borderWidth: 3,
-      backgroundColor: 'transparent',
+      borderRadius: 100,
+    },
+    capture: {
+      width: 58,
+      height: 58,
+      borderRadius: 100,
+      backgroundColor: colors.surface,
     },
   });
+  async function handleCapture() {
+    try {
+      const photo = await cameraRef.current.takePictureAsync({ quality: 1 });
+      console.log(photo);
+    } catch (err) {
+      ToastAndroid.show(err.message, ToastAndroid.LONG);
+    }
+  }
   return (
     <View style={styles.container}>
       <Camera
         ratio="16:9"
+        ref={cameraRef}
         style={styles.camera}
         type={cameraType}
         flashMode={flashMode}
+        onMountError={(err) => ToastAndroid.show(err.message, ToastAndroid.LONG)}
       >
         <View style={styles.actions}>
           <IconButton
@@ -53,7 +69,8 @@ export default function CameraScreen() {
           />
           <TouchableOpacity
             rippleColor="rgba(0,0,0,0.8)"
-            onPress={() => console.log('Captured')}
+            onPress={handleCapture}
+            style={styles.touchable}
           >
             <View style={styles.capture} />
           </TouchableOpacity>
