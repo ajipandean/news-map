@@ -11,7 +11,6 @@ export default function MainBottomTabsNavigation() {
   const { colors } = useTheme();
   return (
     <MainBottomTabs.Navigator
-      shifting={false}
       activeColor={colors.primary}
       barStyle={{
         backgroundColor: colors.surface,
@@ -24,9 +23,9 @@ export default function MainBottomTabsNavigation() {
           component={s.component}
           options={{
             ...s.options,
-            tabBarIcon: ({ color }) => (
+            tabBarIcon: ({ focused, color }) => (
               <MaterialCommunityIcons
-                name={s.icon}
+                name={focused ? s.icon.active : s.icon.inactive}
                 size={24}
                 color={color}
               />

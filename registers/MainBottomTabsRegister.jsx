@@ -6,7 +6,10 @@ import AccountScreen from '../screens/MainBottomTabs/AccountScreen';
 export default [
   {
     name: 'explore',
-    icon: 'map-marker-outline',
+    icon: {
+      active: 'map-marker',
+      inactive: 'map-marker-outline',
+    },
     component: ExploreScreen,
     options: {
       title: 'Explore',
@@ -14,7 +17,10 @@ export default [
   },
   {
     name: 'feed',
-    icon: 'file-document-box-outline',
+    icon: {
+      active: 'file-document-box',
+      inactive: 'file-document-box-outline',
+    },
     component: FeedScreen,
     options: {
       title: 'Feed',
@@ -22,7 +28,10 @@ export default [
   },
   {
     name: 'saved',
-    icon: 'bookmark-outline',
+    icon: {
+      active: 'bookmark',
+      inactive: 'bookmark-outline',
+    },
     component: SavedScreen,
     options: {
       title: 'Saved',
@@ -30,7 +39,10 @@ export default [
   },
   {
     name: 'account',
-    icon: 'account-circle-outline',
+    icon: {
+      active: 'account-circle',
+      inactive: 'account-circle-outline',
+    },
     component: AccountScreen,
     options: {
       title: 'Account',
