@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   Text,
+  StatusBar,
 } from 'react-native';
 import {
   FAB, Button, Divider, useTheme,
@@ -98,6 +99,7 @@ export default function CreateScreen() {
           </Button>
         </View>
       </ScrollView>
+      <StatusBar hidden={false} />
     </View>
   );
 }
