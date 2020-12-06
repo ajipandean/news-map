@@ -2,9 +2,15 @@ import React, { useState, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Camera } from 'expo-camera';
 import {
-  View, StyleSheet, TouchableOpacity, ToastAndroid,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ToastAndroid,
+  StatusBar,
 } from 'react-native';
-import { IconButton, useTheme } from 'react-native-paper';
+import { Button, IconButton, useTheme } from 'react-native-paper';
+
+import PreviewCarousel from '../../components/android/PreviewCarousel';
 
 const BACK = Camera.Constants.Type.back;
 const FRONT = Camera.Constants.Type.front;
@@ -15,16 +21,21 @@ export default function CameraScreen() {
   const { colors } = useTheme();
   const cameraRef = useRef(null);
   const { navigate } = useNavigation();
+  const [photos, setPhotos] = useState([]);
+  const [selected, setSelected] = useState('');
   const [cameraType, setCameraType] = useState(BACK);
   const [flashMode, setFlashMode] = useState(FLASH_OFF);
   const styles = StyleSheet.create({
     container: { flex: 1 },
     camera: { flex: 1 },
-    actions: {
+    section: {
       position: 'absolute',
       left: 0,
       right: 0,
       bottom: 0,
+    },
+    photos: { flexDirection: 'row' },
+    actions: {
       padding: 24,
       flexDirection: 'row',
       alignItems: 'center',
@@ -42,18 +53,30 @@ export default function CameraScreen() {
       borderRadius: 100,
       backgroundColor: colors.surface,
     },
+    next: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      margin: 12,
+      backgroundColor: colors.surface,
+    },
   });
   async function handleCapture() {
     try {
       await cameraRef.current.takePictureAsync({
         skipProcessing: true,
         onPictureSaved: (photo) => {
-          navigate('create-new-post', { photo });
+          // navigate('create-new-post', { photo });
+          setPhotos([...photos, photo]);
         },
       });
     } catch (err) {
       ToastAndroid.show(err.message, ToastAndroid.LONG);
     }
+  }
+  function handleRemove(uri) {
+    setPhotos(photos.filter((photo) => photo.uri !== uri));
+    setSelected(uri);
   }
   return (
     <View style={styles.container}>
@@ -65,29 +88,49 @@ export default function CameraScreen() {
         flashMode={flashMode}
         onMountError={(err) => ToastAndroid.show(err.message, ToastAndroid.LONG)}
       >
-        <View style={styles.actions}>
-          <IconButton
-            animated
-            size={28}
-            color={colors.surface}
-            icon={flashMode === FLASH_OFF ? 'flash-off' : 'flash'}
-            onPress={() => setFlashMode(flashMode === FLASH_OFF ? FLASH_ON : FLASH_OFF)}
-          />
-          <TouchableOpacity
-            rippleColor="rgba(0,0,0,0.8)"
-            onPress={handleCapture}
-            style={styles.touchable}
-          >
-            <View style={styles.capture} />
-          </TouchableOpacity>
-          <IconButton
-            size={28}
-            color={colors.surface}
-            icon="camera-party-mode"
-            onPress={() => setCameraType(cameraType === BACK ? FRONT : BACK)}
-          />
+        <View style={styles.section}>
+          <View style={styles.photos}>
+            <PreviewCarousel
+              photos={photos}
+              dimension={0.4}
+              selected={selected}
+              handleRemove={handleRemove}
+            />
+          </View>
+          <View style={styles.actions}>
+            <IconButton
+              animated
+              size={28}
+              color={colors.surface}
+              icon={flashMode === FLASH_OFF ? 'flash-off' : 'flash'}
+              onPress={() => setFlashMode(flashMode === FLASH_OFF ? FLASH_ON : FLASH_OFF)}
+            />
+            <TouchableOpacity
+              rippleColor="rgba(0,0,0,0.8)"
+              onPress={handleCapture}
+              style={styles.touchable}
+            >
+              <View style={styles.capture} />
+            </TouchableOpacity>
+            <IconButton
+              size={28}
+              color={colors.surface}
+              icon="camera-party-mode"
+              onPress={() => setCameraType(cameraType === BACK ? FRONT : BACK)}
+            />
+          </View>
         </View>
       </Camera>
+      <Button
+        mode="contained"
+        color={colors.surface}
+        icon="arrow-right"
+        style={styles.next}
+        onPress={() => {}}
+      >
+        Next
+      </Button>
+      <StatusBar hidden />
     </View>
   );
 }
