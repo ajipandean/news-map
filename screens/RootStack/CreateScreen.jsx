@@ -9,7 +9,9 @@ import {
   TextInput,
   Text,
 } from 'react-native';
-import { Button, Divider, useTheme } from 'react-native-paper';
+import {
+  FAB, Button, Divider, useTheme,
+} from 'react-native-paper';
 
 export default function CreateScreen() {
   const { params } = useRoute();
@@ -40,14 +42,28 @@ export default function CreateScreen() {
       fontSize: 12,
       color: colors.placeholder,
     },
+    fab: {
+      position: 'absolute',
+      right: 0,
+      bottom: 0,
+      margin: 16,
+      backgroundColor: colors.surface,
+    },
   });
   return (
     <View style={styles.container}>
       <ScrollView style={{ flex: 1, paddingBottom: 56 }}>
-        <View style={styles.padded}>
+        <View style={[styles.padded, { position: 'relative' }]}>
           <Image
             style={styles.image}
             source={{ uri: params.photo.uri }}
+          />
+          <FAB
+            small
+            icon="image-plus"
+            style={styles.fab}
+            color={colors.primary}
+            onPress={() => {}}
           />
         </View>
         <Divider />
