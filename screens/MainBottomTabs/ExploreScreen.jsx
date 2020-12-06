@@ -10,7 +10,7 @@ import {
   ToastAndroid,
   Text,
 } from 'react-native';
-import { FAB, useTheme } from 'react-native-paper';
+import { FAB, useTheme, Avatar } from 'react-native-paper';
 
 import mapConfig from '../../config/map';
 
@@ -29,10 +29,7 @@ export default function ExploreScreen() {
       top: 16,
       left: 0,
       margin: 16,
-      paddingVertical: 8,
-      paddingHorizontal: 16,
       elevation: 4,
-      borderRadius: 100,
       backgroundColor: colors.surface,
     },
     brand_title: {
@@ -62,9 +59,12 @@ export default function ExploreScreen() {
   return (
     <View style={styles.container}>
       <MapView {...mapConfig} style={styles.map} />
-      <View style={styles.brand}>
-        <Text style={styles.brand_title}>App</Text>
-      </View>
+      <Avatar.Text
+        size={40}
+        color={colors.primary}
+        label="A"
+        style={styles.brand}
+      />
       <FAB
         icon="plus"
         style={styles.fab}
