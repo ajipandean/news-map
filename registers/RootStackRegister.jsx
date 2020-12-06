@@ -1,6 +1,6 @@
 import MainBottomTabsNavigation from '../navigations/MainBottomTabsNavigation';
 import CameraScreen from '../screens/RootStack/CameraScreen';
-import CreateScreen from '../screens/RootStack/CreateScreen';
+import CreateNewPostScreen from '../screens/RootStack/CreateNewPostScreen';
 
 export default [
   {
@@ -18,8 +18,8 @@ export default [
     },
   },
   {
-    name: 'create',
-    component: CreateScreen,
+    name: 'create-new-post',
+    component: CreateNewPostScreen,
     options: {
       headerTitle: 'Create new post',
     },

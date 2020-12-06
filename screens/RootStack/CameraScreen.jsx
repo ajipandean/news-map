@@ -48,7 +48,7 @@ export default function CameraScreen() {
       await cameraRef.current.takePictureAsync({
         skipProcessing: true,
         onPictureSaved: (photo) => {
-          navigate('create', { photo });
+          navigate('create-new-post', { photo });
         },
       });
     } catch (err) {
