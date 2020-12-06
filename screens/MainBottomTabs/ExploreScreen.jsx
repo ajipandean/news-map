@@ -36,7 +36,7 @@ export default function ExploreScreen() {
       right: 0,
       bottom: 0,
       margin: 16,
-      backgroundColor: colors.surface,
+      backgroundColor: colors.primary,
     },
   });
   async function handleNavigateToCamera() {
@@ -62,7 +62,6 @@ export default function ExploreScreen() {
       />
       <FAB
         icon="plus"
-        color="black"
         style={styles.fab}
         onPress={handleNavigateToCamera}
       />
