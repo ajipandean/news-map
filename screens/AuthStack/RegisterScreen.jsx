@@ -12,6 +12,7 @@ export default function LoginScreen() {
   const { navigate } = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -32,7 +33,7 @@ export default function LoginScreen() {
   });
   return (
     <View style={styles.container}>
-      <Title style={styles.heading}>Login</Title>
+      <Title style={styles.heading}>Register</Title>
       <View style={styles.form}>
         <TextInput
           dense
@@ -51,19 +52,28 @@ export default function LoginScreen() {
           value={password}
           onChangeText={(v) => setPassword(v)}
         />
+        <TextInput
+          dense
+          secureTextEntry
+          mode="outlined"
+          placeholder="Confirm password"
+          style={styles.input}
+          value={confirm}
+          onChangeText={(v) => setConfirm(v)}
+        />
         <Button
           loading={false}
           mode="contained"
-          onPress={() => console.log(email, password)}
+          onPress={() => navigate('add-info')}
         >
-          Login
+          Register
         </Button>
       </View>
       <TouchableOpacity
         style={styles.helper}
-        onPress={() => navigate('register')}
+        onPress={() => navigate('login')}
       >
-        <Text style={styles.helper_text}>Don&apos;t have an account? Register here.</Text>
+        <Text style={styles.helper_text}>Already have an account? login instead.</Text>
       </TouchableOpacity>
     </View>
   );
