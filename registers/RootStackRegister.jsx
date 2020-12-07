@@ -1,3 +1,4 @@
+import { CardStyleInterpolators } from '@react-navigation/stack';
 import MainBottomTabsNavigation from '../navigations/MainBottomTabsNavigation';
 import CameraScreen from '../screens/RootStack/CameraScreen';
 import CreateNewPostScreen from '../screens/RootStack/CreateNewPostScreen';
@@ -22,6 +23,8 @@ export default [
     component: CreateNewPostScreen,
     options: {
       headerTitle: 'Create new post',
+      headerLeft: null,
+      cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
     },
   },
 ];
