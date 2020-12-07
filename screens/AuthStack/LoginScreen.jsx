@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
   View, StyleSheet, TouchableOpacity, Text,
 } from 'react-native';
@@ -8,6 +9,7 @@ import {
 
 export default function LoginScreen() {
   const { colors } = useTheme();
+  const { navigate } = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const styles = StyleSheet.create({
@@ -34,7 +36,6 @@ export default function LoginScreen() {
       <View style={styles.form}>
         <TextInput
           dense
-          autoFocus
           mode="outlined"
           placeholder="Email"
           style={styles.input}
@@ -58,7 +59,10 @@ export default function LoginScreen() {
           Login
         </Button>
       </View>
-      <TouchableOpacity style={styles.helper}>
+      <TouchableOpacity
+        style={styles.helper}
+        onPress={() => navigate('register')}
+      >
         <Text style={styles.helper_text}>Don&apos;t have an account? Register here.</Text>
       </TouchableOpacity>
     </View>
