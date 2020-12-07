@@ -55,7 +55,7 @@ export default function CameraScreen() {
     },
     next: {
       position: 'absolute',
-      top: 0,
+      top: 18,
       right: 0,
       margin: 12,
       backgroundColor: colors.surface,
