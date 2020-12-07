@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   ToastAndroid,
-  StatusBar,
 } from 'react-native';
 import { Button, IconButton, useTheme } from 'react-native-paper';
 
@@ -140,7 +139,6 @@ export default function CameraScreen() {
       >
         Next
       </Button>
-      <StatusBar hidden />
     </View>
   );
 }

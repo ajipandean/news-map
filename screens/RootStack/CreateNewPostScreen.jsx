@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import {
   View,
   StyleSheet,
-  Image,
   ScrollView,
   TextInput,
   Text,
