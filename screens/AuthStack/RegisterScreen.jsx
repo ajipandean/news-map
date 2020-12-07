@@ -64,7 +64,7 @@ export default function LoginScreen() {
         <Button
           loading={false}
           mode="contained"
-          onPress={() => console.log(email, password)}
+          onPress={() => navigate('add-info')}
         >
           Register
         </Button>
