@@ -1,10 +1,11 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useMemo } from 'react';
 import { ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import RootStackRegister from '../registers/RootStackRegister';
 import AuthStackRegister from '../registers/AuthStackRegister';
+import AuthContext from '../context/AuthContext';
 import firebase from '../firebase.config';
 
 const RootStack = createStackNavigator();
@@ -49,35 +50,52 @@ export default function RootStackNavigation() {
       dispatch({ type: 'RESTORE_TOKEN', token });
     })();
   }, []);
+  const authContext = useMemo(
+    () => ({
+      async register(email, password) {
+        try {
+          const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
+          const { uid } = user;
+          await AsyncStorage.setItem('token', uid);
+          return true;
+        } catch (err) {
+          ToastAndroid.show(err.message, ToastAndroid.LONG);
+          return false;
+        }
+      },
+    }),
+  );
   return (
-    <RootStack.Navigator>
-      {state.token ? (
-        <>
-          {RootStackRegister.map((s) => (
-            <RootStack.Screen
-              key={s.name}
-              name={s.name}
-              component={s.component}
-              options={{
-                ...s.options,
-              }}
-            />
-          ))}
-        </>
-      ) : (
-        <>
-          {AuthStackRegister.map((s) => (
-            <RootStack.Screen
-              key={s.name}
-              name={s.name}
-              component={s.component}
-              options={{
-                ...s.options,
-              }}
-            />
-          ))}
-        </>
-      )}
-    </RootStack.Navigator>
+    <AuthContext.Provider value={authContext}>
+      <RootStack.Navigator>
+        {state.token ? (
+          <>
+            {RootStackRegister.map((s) => (
+              <RootStack.Screen
+                key={s.name}
+                name={s.name}
+                component={s.component}
+                options={{
+                  ...s.options,
+                }}
+              />
+            ))}
+          </>
+        ) : (
+          <>
+            {AuthStackRegister.map((s) => (
+              <RootStack.Screen
+                key={s.name}
+                name={s.name}
+                component={s.component}
+                options={{
+                  ...s.options,
+                }}
+              />
+            ))}
+          </>
+        )}
+      </RootStack.Navigator>
+    </AuthContext.Provider>
   );
 }
