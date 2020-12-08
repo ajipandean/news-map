@@ -42,7 +42,6 @@ export default function RootStackNavigation() {
     (async () => {
       let token;
       try {
-        // await AsyncStorage.removeItem('token');
         token = await AsyncStorage.getItem('token');
       } catch (err) {
         token = null;
@@ -60,6 +59,15 @@ export default function RootStackNavigation() {
         } catch (err) {
           ToastAndroid.show(err.message, ToastAndroid.LONG);
           return false;
+        }
+      },
+      async logout() {
+        try {
+          await firebase.auth().signOut();
+          await AsyncStorage.removeItem('token');
+          dispatch({ type: 'LOGOUT', token: null });
+        } catch (err) {
+          ToastAndroid.show(err.message, ToastAndroid.LONG);
         }
       },
       async updateProfile(photoURL, displayName) {
