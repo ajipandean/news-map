@@ -42,6 +42,7 @@ export default function RootStackNavigation() {
     (async () => {
       let token;
       try {
+        // await AsyncStorage.removeItem('token');
         token = await AsyncStorage.getItem('token');
       } catch (err) {
         token = null;
@@ -54,13 +55,22 @@ export default function RootStackNavigation() {
     () => ({
       async register(email, password) {
         try {
-          const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
-          const { uid } = user;
-          await AsyncStorage.setItem('token', uid);
+          await firebase.auth().createUserWithEmailAndPassword(email, password);
           return true;
         } catch (err) {
           ToastAndroid.show(err.message, ToastAndroid.LONG);
           return false;
+        }
+      },
+      async updateProfile(photoURL, displayName) {
+        try {
+          const user = firebase.auth().currentUser;
+          const { uid } = user;
+          await user.updateProfile({ photoURL, displayName });
+          await AsyncStorage.setItem('token', uid);
+          dispatch({ type: 'LOGIN', token: uid });
+        } catch (err) {
+          ToastAndroid.show(err.message, ToastAndroid.LONG);
         }
       },
     }),

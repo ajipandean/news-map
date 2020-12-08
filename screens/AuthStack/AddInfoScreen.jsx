@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import {
   View, StyleSheet, Image, TouchableOpacity, Platform, ToastAndroid,
 } from 'react-native';
 import { TextInput, Button, useTheme } from 'react-native-paper';
 
+import AuthContext from '../../context/AuthContext';
+import firebase from '../../firebase.config';
+
 export default function AddInfoScreen() {
   const { colors } = useTheme();
   const [image, setImage] = useState('');
+  const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { updateProfile } = useContext(AuthContext);
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -54,6 +60,17 @@ export default function AddInfoScreen() {
       ToastAndroid.show(err.message, ToastAndroid.LONG);
     }
   }
+  async function handleUpdateProfile() {
+    setLoading(true);
+    try {
+      if (!name) throw new Error('Name cannot be empty.');
+      await updateProfile(image, name);
+    } catch (err) {
+      ToastAndroid.show(err.message, ToastAndroid.LONG);
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -69,11 +86,15 @@ export default function AddInfoScreen() {
         <TextInput
           dense
           mode="outlined"
+          value={name}
+          onChangeText={(v) => setName(v)}
           style={styles.input}
           placeholder="Enter display name"
         />
         <Button
+          loading={loading}
           mode="contained"
+          onPress={handleUpdateProfile}
         >
           Save
         </Button>
