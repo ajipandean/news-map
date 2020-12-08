@@ -64,7 +64,7 @@ export default function CreateScreen() {
     setLoading(true);
     try {
       // upload image - done
-      const photos = params.photos.map((i) => i.uri);
+      const photos = params.photos.map((i) => ({ uri: i.uri }));
       // parse location lat long - done
       const { coords } = await Location.getCurrentPositionAsync();
       // construct posts object
