@@ -10,7 +10,7 @@ import AuthContext from '../context/AuthContext';
 import firebase from '../firebase.config';
 
 // Ignore firebase upload warning
-LogBox.ignoreWarnings(['Setting a timer']);
+LogBox.ignoreLogs(['Setting a timer']);
 const _console = _.clone(console);
 console.warn = (message) => {
   if (message.indexOf('Setting a timer') <= -1) {
