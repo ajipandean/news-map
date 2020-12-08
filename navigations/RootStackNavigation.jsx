@@ -1,12 +1,22 @@
 import React, { useReducer, useEffect, useMemo } from 'react';
-import { ToastAndroid } from 'react-native';
+import { ToastAndroid, LogBox } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import _ from 'lodash';
 import RootStackRegister from '../registers/RootStackRegister';
 import AuthStackRegister from '../registers/AuthStackRegister';
 import AuthContext from '../context/AuthContext';
 import firebase from '../firebase.config';
+
+// Ignore firebase upload warning
+LogBox.ignoreLogs(['Setting a timer']);
+const _console = _.clone(console);
+console.warn = (message) => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
+};
 
 const RootStack = createStackNavigator();
 
@@ -84,7 +94,15 @@ export default function RootStackNavigation() {
         try {
           const user = firebase.auth().currentUser;
           const { uid } = user;
-          await user.updateProfile({ photoURL, displayName });
+          const response = await fetch(photoURL);
+          const blobFile = await response.blob();
+          const storageRef = firebase.storage().ref('avatars').child(`${uid}.jpg`);
+          await storageRef.put(blobFile);
+          const downloadURL = await storageRef.getDownloadURL();
+          await user.updateProfile({
+            photoURL: downloadURL,
+            displayName,
+          });
           await AsyncStorage.setItem('token', uid);
           dispatch({ type: 'LOGIN', token: uid });
         } catch (err) {

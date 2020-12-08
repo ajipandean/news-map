@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import {
@@ -8,22 +8,29 @@ import {
   TextInput,
   Text,
   StatusBar,
+  ToastAndroid,
 } from 'react-native';
 import {
   FAB, Button, Divider, useTheme,
 } from 'react-native-paper';
 
+import firebase from '../../firebase.config';
 import PreviewCarousel from '../../components/android/PreviewCarousel';
 
 export default function CreateScreen() {
   const { params } = useRoute();
   const { navigate } = useNavigation();
   const { colors } = useTheme();
+  const [user, setUser] = useState({});
+  const [description, setDescription] = useState('');
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    (async () => {
-      const location = await Location.getCurrentPositionAsync();
-      console.log(location);
-    })();
+    const unsubscribe = firebase.auth().onAuthStateChanged((u) => {
+      if (user) {
+        setUser(u);
+      }
+    });
+    return () => unsubscribe();
   });
   const styles = StyleSheet.create({
     container: {
@@ -53,6 +60,36 @@ export default function CreateScreen() {
       backgroundColor: colors.surface,
     },
   });
+  async function handleSaveData() {
+    setLoading(true);
+    try {
+      // upload image - done
+      const photos = params.photos.map((i) => i.uri);
+      // parse location lat long - done
+      const { coords } = await Location.getCurrentPositionAsync();
+      // construct posts object
+      const post = {
+        photos,
+        description,
+        user: {
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+        },
+        location: {
+          lat: coords.latitude,
+          long: coords.longitude,
+        },
+      };
+      // save to firestore
+      await firebase.firestore().collection('posts').add(post);
+      navigate('main-bottom-tabs', { screen: 'explore' });
+    } catch (err) {
+      ToastAndroid.show(err.message, ToastAndroid.LONG);
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
     <View style={styles.container}>
       <ScrollView style={{ flex: 1, paddingBottom: 56 }}>
@@ -78,6 +115,8 @@ export default function CreateScreen() {
         <View style={styles.padded}>
           <TextInput
             multiline
+            value={description}
+            onChangeText={(v) => setDescription(v)}
             style={styles.input}
             placeholder="What's happening?"
           />
@@ -91,8 +130,9 @@ export default function CreateScreen() {
         <Divider />
         <View style={styles.padded}>
           <Button
+            loading={loading}
             mode="contained"
-            onPress={() => {}}
+            onPress={handleSaveData}
           >
             Save
           </Button>
