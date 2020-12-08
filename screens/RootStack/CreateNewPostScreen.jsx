@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import {
@@ -21,8 +21,17 @@ export default function CreateScreen() {
   const { params } = useRoute();
   const { navigate } = useNavigation();
   const { colors } = useTheme();
+  const [user, setUser] = useState({});
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((u) => {
+      if (user) {
+        setUser(u);
+      }
+    });
+    return () => unsubscribe();
+  });
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -56,15 +65,17 @@ export default function CreateScreen() {
     try {
       // upload image - done
       const photos = params.photos.map((i) => i.uri);
-      // fetch current login user
-      const { displayName, email, photoURL } = firebase.auth().currentUser;
       // parse location lat long - done
       const { coords } = await Location.getCurrentPositionAsync();
       // construct posts object
       const post = {
         photos,
         description,
-        user: { displayName, email, photoURL },
+        user: {
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+        },
         location: {
           lat: coords.latitude,
           long: coords.longitude,
