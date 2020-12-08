@@ -52,6 +52,16 @@ export default function RootStackNavigation() {
   }, []);
   const authContext = useMemo(
     () => ({
+      async login(email, password) {
+        try {
+          const data = await firebase.auth().signInWithEmailAndPassword(email, password);
+          const { uid } = data.user;
+          await AsyncStorage.setItem('token', uid);
+          dispatch({ type: 'LOGIN', token: uid });
+        } catch (err) {
+          ToastAndroid.show(err.message, ToastAndroid.LONG);
+        }
+      },
       async register(email, password) {
         try {
           await firebase.auth().createUserWithEmailAndPassword(email, password);
