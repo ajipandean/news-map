@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
-  View, StyleSheet, TouchableOpacity, Text,
+  View, StyleSheet, TouchableOpacity, Text, ToastAndroid,
 } from 'react-native';
 import {
   TextInput, Title, Button, useTheme,
 } from 'react-native-paper';
 
+import AuthContext from '../../context/AuthContext';
+
 export default function LoginScreen() {
   const { colors } = useTheme();
   const { navigate } = useNavigation();
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
+  const { register } = useContext(AuthContext);
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -31,6 +35,18 @@ export default function LoginScreen() {
       color: colors.placeholder,
     },
   });
+  async function handleRegister() {
+    setLoading(true);
+    try {
+      if (confirm !== password) throw new Error('Confirm password doesn\'t match.');
+      const isSuccess = await register(email, password);
+      if (isSuccess) navigate('add-info');
+    } catch (err) {
+      ToastAndroid.show(err.message, ToastAndroid.LONG);
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
     <View style={styles.container}>
       <Title style={styles.heading}>Register</Title>
@@ -62,9 +78,9 @@ export default function LoginScreen() {
           onChangeText={(v) => setConfirm(v)}
         />
         <Button
-          loading={false}
+          loading={loading}
           mode="contained"
-          onPress={() => navigate('add-info')}
+          onPress={handleRegister}
         >
           Register
         </Button>
