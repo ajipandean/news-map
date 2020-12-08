@@ -84,7 +84,15 @@ export default function RootStackNavigation() {
         try {
           const user = firebase.auth().currentUser;
           const { uid } = user;
-          await user.updateProfile({ photoURL, displayName });
+          const response = await fetch(photoURL);
+          const blobFile = await response.blob();
+          const storageRef = firebase.storage().ref('avatars').child(`${uid}.jpg`);
+          await storageRef.put(blobFile);
+          const downloadURL = await storageRef.getDownloadURL();
+          await user.updateProfile({
+            photoURL: downloadURL,
+            displayName,
+          });
           await AsyncStorage.setItem('token', uid);
           dispatch({ type: 'LOGIN', token: uid });
         } catch (err) {
